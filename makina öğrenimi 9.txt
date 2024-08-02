@@ -1,0 +1,42 @@
+import random
+import pandas as pd
+import numpy as np
+import seaborn as sbn
+import random
+import matplotlib.pyplot as plt
+
+dataframe=pd.read_csv("Ads_CTR_Optimisation.csv")
+print(dataframe.head())
+
+
+N=10000
+d=10#toplam 10 ilan var
+oduller=[0]*d#ilk bast butun ilanların  odulu 0
+
+toplam=0#toplam odul
+secilenler=[]
+birler=[0]*d
+sifirlar=[0]*d
+for n in range(1,N):
+    ad=0
+    max_th=0
+
+    for i in range(0,d):
+        rast_beta=random.betavariate(birler[i]+1,sifirlar[i]+1)
+        if rast_beta>max_th:
+            max_th=rast_beta
+            ad=i
+
+    secilenler.append(ad)
+    
+    odul=dataframe.values[n,ad]
+    if odul ==1:
+        birler[ad]+=1
+    else:
+        sifirlar[ad]+=1
+    oduller[ad]+=odul
+    toplam+=odul
+print("toplam odul")
+print(toplam)
+plt.hist(secilenler)
+plt.show()
